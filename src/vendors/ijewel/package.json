@@ -1,0 +1,8 @@
+{
+  "name": "ijewel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/ijewel.js",
+  "author": "pixotronics",
+  "license": "ISC"
+}
