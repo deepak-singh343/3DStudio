@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import {SetUp3D} from '../3D/setUp3D'
+import Hotspots from './Hotspots'
 const StudioMode = () => {
 
   function setUp3D(){
@@ -11,9 +12,7 @@ const StudioMode = () => {
   
   return (
     <div id='studio-mode'>
-      <canvas id='studio-mode-3d-canvas'>
-
-      </canvas>
+      <Hotspots/>
     </div>
   )
 }
