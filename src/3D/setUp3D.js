@@ -8,8 +8,6 @@ import {
   Vector2,
   Vector3,
   Box3,
-  Box3Helper,
-  Color
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
@@ -21,6 +19,7 @@ import { loadRequired3dModel } from './3DLoader'
 
 import { setRequiredMaterial } from './materials/setRequiredMaterial'
 import modelScene from '../assets/models/seamaster3.glb'
+import { updateScreenPosition } from './Ruler'
 
 class setUp3D {
   constructor () {
@@ -115,7 +114,9 @@ class setUp3D {
     renderer.gammaInput = true
     renderer.gammaOutput = true
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('studio-mode').appendChild(renderer.domElement);
+    const canvas=renderer.domElement;
+    canvas.id='threeD-canvas'
+    document.getElementById('studio-mode').append(canvas);
     return renderer
   }
 
@@ -191,7 +192,7 @@ class setUp3D {
     requestAnimationFrame(() => {
       if (this.renderer && this.scene) {
           this.renderer.render(this.scene, this.camera)
-          this.updateScreenPosition()
+          updateScreenPosition()
         }
         this.renderScene()
       })
@@ -270,62 +271,6 @@ class setUp3D {
 		  resolve()
 		})
 	}
-
-  updateScreenPosition() {
-        const object = this.model.object
-        const box = new Box3().setFromObject(object)
-        let helper = new Box3Helper(box, new Color(0, 255, 0));
-        this.scene.add(helper);
-        
-        const vector1 = new Vector3(box.min.x,box.max.y,box.max.z);
-        const vector2 = new Vector3(box.max.x,box.max.y,box.max.z);
-        const vector3 = new Vector3(box.min.x,box.min.y,box.min.z);
-        const vector4 = new Vector3(box.max.x,box.min.y,box.min.z);
-        const vector5 = new Vector3(box.min.x,box.min.y,box.max.z);
-        const vector6 = new Vector3(box.max.x,box.min.y,box.max.z);
-
-        this.projectScreen(vector1)
-        this.projectScreen(vector2)
-        this.projectScreen(vector3)
-        this.projectScreen(vector4)
-        this.projectScreen(vector5)
-        this.projectScreen(vector6)
-       
-
-        const frontTopLeftPoint=document.getElementById('top-left')
-        this.positionPoints(frontTopLeftPoint,vector1)
-        
-        const frontTopRightPoint=document.getElementById('top-right')
-        this.positionPoints(frontTopRightPoint,vector2)
-
-        const backBottomLeftPoint=document.getElementById('back-bottom-left')
-        this.positionPoints(backBottomLeftPoint,vector3)
-
-        const backbottomRightPoint=document.getElementById('back-bottom-right')
-        this.positionPoints(backbottomRightPoint,vector4)
-
-        const frontBottomLeftPoint=document.getElementById('front-bottom-left')
-        this.positionPoints(frontBottomLeftPoint,vector5)
-
-        const frontBottomRightPoint=document.getElementById('front-bottom-right')
-        this.positionPoints(frontBottomRightPoint,vector6)
-
-        
-        // annotation1.style.opacity = spriteBehindObject ? 0.25 : 1;
-  }
-
-  projectScreen(vector){
-    const canvas = this.renderer.domElement
-    vector.project(this.camera)
-    vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
-    vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
-  }
-
-  positionPoints(pointElement,vector){
-    pointElement.style.left = `${vector.x}px`;
-    pointElement.style.top = `${vector.y}px`;
-  }
-
 }
 
 const SetUp3D = new setUp3D()
