@@ -14,57 +14,66 @@ function updateScreenPosition() {
     let helper = new Box3Helper(box, new Color(0, 255, 0));
     SetUp3D.scene.add(helper);
     
-    const vector1 = new Vector3(box.min.x,box.max.y,box.max.z);
-    const vector2 = new Vector3(box.max.x,box.max.y,box.max.z);
-    const vector3 = new Vector3(box.min.x,box.min.y,box.min.z);
-    const vector4 = new Vector3(box.max.x,box.min.y,box.min.z);
-    const vector5 = new Vector3(box.min.x,box.min.y,box.max.z);
-    const vector6 = new Vector3(box.max.x,box.min.y,box.max.z);
-    const vector7 = new Vector3((box.min.x+box.max.x)/2,box.max.y,box.max.z)
-    const vector8 = new Vector3(box.min.x,(box.min.y+box.max.y)/2,box.max.z)
-    const vector9 = new Vector3(box.min.x,box.min.y,(box.min.z+box.max.z))
+    const topLeftvector = new Vector3(box.min.x,box.max.y,box.max.z);      
+    const topRightVector = new Vector3(box.max.x,box.max.y,box.max.z);      
+    const backBottomLeftVector = new Vector3(box.min.x,box.min.y,box.min.z);    
+    const backBottomRightVector = new Vector3(box.max.x,box.min.y,box.min.z);      
+    const frontBottomLeftVector = new Vector3(box.min.x,box.min.y,box.max.z);    
+    const frontBottomRightVector = new Vector3(box.max.x,box.min.y,box.max.z);     
+    const itemLengthVector = new Vector3((box.min.x+box.max.x)/2,box.max.y,box.max.z)      
+    const itemHeightLeftVector = new Vector3(box.min.x,(box.min.y+box.max.y)/2,box.max.z)      
+    const itemBreadthLeftVector = new Vector3(box.min.x,box.min.y,(box.min.z+box.max.z))        
+    const itemHeightRightVector = new Vector3(box.max.x,(box.min.y+box.max.y)/2,box.max.z)     
+    const itemBreadthRightVector = new Vector3(box.max.x,box.min.y,(box.min.z+box.max.z))        
 
-    projectScreen(vector1)
-    projectScreen(vector2)
-    projectScreen(vector3)
-    projectScreen(vector4)
-    projectScreen(vector5)
-    projectScreen(vector6)
-    projectScreen(vector7)
-    projectScreen(vector8)
-    projectScreen(vector9)
-   
+    projectScreen(topLeftvector)
+    projectScreen(topRightVector)
+    projectScreen(backBottomLeftVector)
+    projectScreen(backBottomRightVector)
+    projectScreen(frontBottomLeftVector)
+    projectScreen(frontBottomRightVector)
+    projectScreen(itemLengthVector)
+    projectScreen(itemHeightLeftVector)
+    projectScreen(itemBreadthLeftVector)
+    projectScreen(itemHeightRightVector)
+    projectScreen(itemBreadthRightVector)
 
     const frontTopLeftPoint=document.getElementById('top-left')
-    positionPoints(frontTopLeftPoint,vector1)
+    positionPoints(frontTopLeftPoint,topLeftvector)
     
     const frontTopRightPoint=document.getElementById('top-right')
-    positionPoints(frontTopRightPoint,vector2)
+    positionPoints(frontTopRightPoint,topRightVector)
 
     const backBottomLeftPoint=document.getElementById('back-bottom-left')
-    positionPoints(backBottomLeftPoint,vector3)
+    positionPoints(backBottomLeftPoint,backBottomLeftVector)
 
     const backbottomRightPoint=document.getElementById('back-bottom-right')
-    positionPoints(backbottomRightPoint,vector4)
+    positionPoints(backbottomRightPoint,backBottomRightVector)
 
     const frontBottomLeftPoint=document.getElementById('front-bottom-left')
-    positionPoints(frontBottomLeftPoint,vector5)
+    positionPoints(frontBottomLeftPoint,frontBottomLeftVector)
 
     const frontBottomRightPoint=document.getElementById('front-bottom-right')
-    positionPoints(frontBottomRightPoint,vector6)
+    positionPoints(frontBottomRightPoint,frontBottomRightVector)
 
     const itemLength=document.getElementById('item-length')
     itemLength.textContent=`${Math.round(size.x * 0.0264583333)} cm`
-    positionPoints(itemLength,vector7)
+    positionPoints(itemLength,itemLengthVector)
 
     const itemHeight=document.getElementById('item-height')
     itemHeight.textContent=`${Math.round(size.y * 0.0264583333)} cm`
-    positionPoints(itemHeight,vector8)
+    positionPoints(itemHeight,itemHeightLeftVector)
     
     const itemBreadth=document.getElementById('item-breadth')
     itemBreadth.textContent=`${Math.round(size.z * 0.0264583333)} cm`
-    positionPoints(itemBreadth,vector9)
-    // annotation1.style.opacity = spriteBehindObject ? 0.25 : 1;
+    positionPoints(itemBreadth,itemBreadthLeftVector)
+
+    showOrhideRulerPointsForRight(backBottomRightVector,backbottomRightPoint,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)
+    showOrhideRulerPointsForRight(frontBottomRightVector,frontBottomRightPoint,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)
+
+    showOrhideRulerPointsForLeft(backBottomLeftVector,backBottomLeftPoint,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)
+    showOrhideRulerPointsForLeft(frontBottomLeftVector,frontBottomLeftPoint,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)
+
 }
 
 function projectScreen(vector){
@@ -77,6 +86,42 @@ function projectScreen(vector){
 function positionPoints(pointElement,vector){
     pointElement.style.left = `${vector.x - 5}px`;
     pointElement.style.top = `${vector.y - 5}px`;
+}
+
+function showOrhideRulerPointsForRight(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector){
+    const meshDistance = SetUp3D.camera.position.distanceTo(SetUp3D.model.object.position);
+    const distance = SetUp3D.camera.position.distanceTo(vector)
+    if(distance>meshDistance){
+        point.style.display='none'
+        togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)         //position dimensions to left
+    }
+    else{
+        point.style.display='block'
+        togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)      //position dimensions to right
+    }
+    
+}
+
+function showOrhideRulerPointsForLeft(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector){
+    const meshDistance = SetUp3D.camera.position.distanceTo(SetUp3D.model.object.position);
+    const distance = SetUp3D.camera.position.distanceTo(vector)
+    if(distance<meshDistance){
+        point.style.display='none'
+        togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)    //position dimensions to right
+    }
+    else{
+        point.style.display='block'
+        togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)          //position dimensions to left
+    }
+    
+}
+
+function togglePositionOfDimensions(vector1,vector2){
+    const itemHeight=document.getElementById('item-height')
+    positionPoints(itemHeight,vector1)
+    
+    const itemBreadth=document.getElementById('item-breadth')
+    positionPoints(itemBreadth,vector2)
 }
 
 export {
