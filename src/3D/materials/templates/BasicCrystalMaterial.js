@@ -1,6 +1,5 @@
-import { Material3D } from '../Material3D'
 import * as IJEWEL from 'ijewel'
-import { Color, Mesh, Vector2, Vector3 } from 'three'
+import { Color, Mesh, Vector3 } from 'three'
 
 export class BasicCrystalMaterial {
   constructor ({ object, envMap, renderer }) {

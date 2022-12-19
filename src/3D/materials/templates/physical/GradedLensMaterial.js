@@ -1,4 +1,4 @@
-import { MeshStandardMaterial, TextureLoader } from 'three'
+import { TextureLoader } from 'three'
 import { BasicPhysicalMaterial } from '../BasicPhysicalMaterial'
 
 export class GradedLensMaterial extends BasicPhysicalMaterial {

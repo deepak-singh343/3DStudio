@@ -1,4 +1,4 @@
-import { Color, MeshPhongMaterial, MeshStandardMaterial } from 'three'
+import { Color, MeshPhongMaterial } from 'three'
 
 export class BasicPhongMaterial {
   constructor ({ object, envMap, renderer }) {

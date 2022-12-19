@@ -65,7 +65,7 @@ function setRequiredMaterial (object, renderer, data) {
   object.traverse(o => {
     const meshName = o.name.toLowerCase()
     if (meshName.includes('customizable')) {
-      const [, nodeName, defaultColor] = meshName.split('-')
+      const [, nodeName, ] = meshName.split('-')
       
       const calibrationData = data.calibrationData
 

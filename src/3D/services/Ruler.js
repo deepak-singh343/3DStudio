@@ -7,13 +7,16 @@ import {
 
 import { SetUp3D } from './setUp3D'
 
-function updateScreenPosition() {
-    const object = SetUp3D.model.object
-    const box = new Box3().setFromObject(object)
-    const size = box.getSize(new Vector3())
-    let helper = new Box3Helper(box, new Color(0, 255, 0));
-    SetUp3D.scene.add(helper);
-    
+let object,box,size,helper
+const updateScreenPosition=()=> {
+    if(!box){
+        object = SetUp3D.model.object
+        box = new Box3().setFromObject(object)
+        size = box.getSize(new Vector3())
+        
+        helper = new Box3Helper(box, new Color(0, 255, 0));
+        SetUp3D.scene.add(helper);
+    }
     const topLeftvector = new Vector3(box.min.x,box.max.y,box.max.z);      
     const topRightVector = new Vector3(box.max.x,box.max.y,box.max.z);      
     const backBottomLeftVector = new Vector3(box.min.x,box.min.y,box.min.z);    
@@ -57,15 +60,22 @@ function updateScreenPosition() {
     positionPoints(frontBottomRightPoint,frontBottomRightVector)
 
     const itemLength=document.getElementById('item-length')
-    itemLength.textContent=`${Math.round(size.x * 0.0264583333)} cm`
+    if(itemLength){
+        itemLength.textContent=`${Math.round(size.x * 0.0264583333)} cm`
+    }
     positionPoints(itemLength,itemLengthVector)
 
     const itemHeight=document.getElementById('item-height')
-    itemHeight.textContent=`${Math.round(size.y * 0.0264583333)} cm`
+    if(itemHeight){
+        itemHeight.textContent=`${Math.round(size.y * 0.0264583333)} cm`
+    }
     positionPoints(itemHeight,itemHeightLeftVector)
     
     const itemBreadth=document.getElementById('item-breadth')
-    itemBreadth.textContent=`${Math.round(size.z * 0.0264583333)} cm`
+    if(itemBreadth){
+        itemBreadth.textContent=`${Math.round(size.z * 0.0264583333)} cm`
+    }
+    
     positionPoints(itemBreadth,itemBreadthLeftVector)
 
     showOrhideRulerPointsForRight(backBottomRightVector,backbottomRightPoint,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)
@@ -76,47 +86,51 @@ function updateScreenPosition() {
 
 }
 
-function projectScreen(vector){
+const projectScreen=(vector)=>{
     const canvas = SetUp3D.renderer.domElement
     vector.project(SetUp3D.camera)
     vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
     vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
 }
 
-function positionPoints(pointElement,vector){
-    pointElement.style.left = `${vector.x - 5}px`;
-    pointElement.style.top = `${vector.y - 5}px`;
+const positionPoints=(pointElement,vector)=>{
+    if(pointElement){
+        pointElement.style.left = `${vector.x - 5}px`;
+        pointElement.style.top = `${vector.y - 5}px`;
+    }
 }
 
-function showOrhideRulerPointsForRight(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector){
+const showOrhideRulerPointsForRight=(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)=>{
     const meshDistance = SetUp3D.camera.position.distanceTo(SetUp3D.model.object.position);
     const distance = SetUp3D.camera.position.distanceTo(vector)
-    if(distance>meshDistance){
-        point.style.display='none'
-        togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)         //position dimensions to left
+    if(point){
+        if(distance>meshDistance){
+            point.style.display='none'
+            togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)         //position dimensions to left
+        }
+        else{
+            point.style.display='block'
+            togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)      //position dimensions to right
+        }
     }
-    else{
-        point.style.display='block'
-        togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)      //position dimensions to right
-    }
-    
 }
 
-function showOrhideRulerPointsForLeft(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector){
+const showOrhideRulerPointsForLeft=(vector,point,itemHeightLeftVector,itemBreadthLeftVector,itemHeightRightVector,itemBreadthRightVector)=>{
     const meshDistance = SetUp3D.camera.position.distanceTo(SetUp3D.model.object.position);
     const distance = SetUp3D.camera.position.distanceTo(vector)
-    if(distance<meshDistance){
-        point.style.display='none'
-        togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)    //position dimensions to right
+    if(point){
+        if(distance<meshDistance){
+            point.style.display='none'
+            togglePositionOfDimensions(itemHeightRightVector,itemBreadthRightVector)    //position dimensions to right
+        }
+        else{
+            point.style.display='block'
+            togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)          //position dimensions to left
+        }
     }
-    else{
-        point.style.display='block'
-        togglePositionOfDimensions(itemHeightLeftVector,itemBreadthLeftVector)          //position dimensions to left
-    }
-    
 }
 
-function togglePositionOfDimensions(vector1,vector2){
+const togglePositionOfDimensions=(vector1,vector2)=>{
     const itemHeight=document.getElementById('item-height')
     positionPoints(itemHeight,vector1)
     
@@ -125,5 +139,10 @@ function togglePositionOfDimensions(vector1,vector2){
 }
 
 export {
-    updateScreenPosition,
+    updateScreenPosition
 }
+
+
+
+
+

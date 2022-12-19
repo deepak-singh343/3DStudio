@@ -8,17 +8,19 @@ import {
   Vector2,
   Vector3,
   Box3,
+
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { TransparentBackgroundFixedUnrealBloomPass } from '../threejs/TransparentBackgroundFixedUnrealBloomPass'
-import { loadRequired3dModel } from './3DLoader'
+import { TransparentBackgroundFixedUnrealBloomPass } from '../TransparentBackgroundFixedUnrealBloomPass'
+import { loadRequired3dModel } from '../3DLoader'
+import { OrbitControls } from '../OrbitControls'
 
-import { setRequiredMaterial } from './materials/setRequiredMaterial'
-import modelScene from '../assets/models/seamaster3.glb'
+import { setRequiredMaterial } from '../materials/setRequiredMaterial'
+import modelScene from '../../assets/models/seamaster3.glb'
 import { updateScreenPosition } from './Ruler'
 
 class setUp3D {
@@ -28,7 +30,7 @@ class setUp3D {
     this.ambient = null
     this.lightFront = null
     this.sceneLoaded = false
-
+    this.controls=null
 
     this.canvas = null
 
@@ -37,7 +39,7 @@ class setUp3D {
     this.canvasWidth = window.innerWidth
     this.canvasHeight = window.innerHeight
     this.scaleFactor = 1
-
+    this.showHotspots=false
     this.data = '{"model":"1","threedModel":"true","dragForce3d":"0.97","pointLight6":"0","pointLight5":"0","pointLight4":"0","pointLight3":"0.6","pointLight1":"0","pointLight2":"0.4","jewelryAngle3d":"10","jewelryLength3d":"200","calibrationData":{"metal":{"color":"#000000","refractionRatio":"0.98","metalness":"0.8","roughness":"0","opacity":"1","materialId":"BasicMetalMaterial"},"pearl":{"color":"#0689cb","refractionRatio":"0.98","metalness":"0.8","opacity":"1","materialId":"BasicMetalMaterial"},"crystal":{"color":"#d7b740","refractionRatio":"0.98","metalness":"1","roughness":"0.33","opacity":"1","materialId":"GoldMaterial"},"bottom_pearl":{"color":"#ff9f00","metalness":"0.8","roughness":"0","opacity":"0.8","dispersion":"1","squashFactor":"1","absorbptionFactor":"0.5","gammaFactor":"0.5","geometryFactor":"0.3","boostFactors":{"x":"2","y":"0.5","z":"0"},"materialId":"BasicCrystalMaterial"}}}'
   }
 
@@ -45,7 +47,6 @@ class setUp3D {
     if (!this.renderer) {
       return
     }
-
     this.dprScale = 1
     this.renderer.setPixelRatio(window.devicePixelRatio)
   }
@@ -66,16 +67,17 @@ class setUp3D {
     const pmremGenerator = new PMREMGenerator(this.renderer)
     const backgroundTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture
     this.scene.environment = backgroundTexture
-
+    
     this.sceneLoaded = true
     this.camera = new OrthographicCamera(-this.canvasWidth / 2, this.canvasWidth / 2, this.canvasHeight / 2, -this.canvasHeight / 2, 1, 10000)
 
     this.camera.position.x = 1.8;
     this.camera.position.y = 11.5;
     this.camera.position.z = 5.2;
+    this.camera.lookAt( this.scene.position );
     this.model = {
       status: 'loading',
-      object: null
+      object: null,
     }
 
     this.addPostProcessing(window.innerWidth,window.innerHeight,this.dprScale)
@@ -113,10 +115,13 @@ class setUp3D {
     renderer.toneMappingWhitePoint = 1
     renderer.gammaInput = true
     renderer.gammaOutput = true
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight-2);
     const canvas=renderer.domElement;
     canvas.id='threeD-canvas'
-    document.getElementById('studio-mode').append(canvas);
+    let threeDCanvas=document.getElementById('threeD-canvas')
+    if(!threeDCanvas){
+      document.getElementById('studio-mode').append(canvas);
+    }
     return renderer
   }
 
@@ -194,6 +199,9 @@ class setUp3D {
           this.renderer.render(this.scene, this.camera)
           updateScreenPosition()
         }
+        if(this.controls){
+          this.controls.update()
+        }
         this.renderScene()
       })
   }
@@ -266,11 +274,45 @@ class setUp3D {
 		this.camera.position.set(0, 0, 1000)
 
 		return new Promise(async (resolve) => {
-		  const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls')
 		  this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+      this.controls.listenToKeyEvents(document.body)
 		  resolve()
 		})
 	}
+
+  rotateModelHorizontally(rotation){
+    const rotationSpeed=this.controls.rotateSpeed
+    this.controls.rotateSpeed=10
+    let event
+    if(rotation==='right'){
+      event=new KeyboardEvent('keydown',{
+        ctrlKey : true,
+        code : this.controls.keys.LEFT,
+        key : this.controls.keys.LEFT,
+      })
+    }
+    else{
+      event=new KeyboardEvent('keydown',{
+        ctrlKey : true,
+        code : this.controls.keys.RIGHT,
+        key : this.controls.keys.RIGHT,
+      })
+    }
+    document.body.dispatchEvent(event)
+    this.controls.rotateSpeed=rotationSpeed
+  }
+
+  zoomInZoomOut(type){
+    const evt = new Event('wheel', {bubbles: true, cancelable: true});
+    evt.deltaY = type==='zoomIn'?-240:240
+    this.canvas.dispatchEvent(evt);
+  }
+
+  playPauseAutoRotation(val){
+    this.controls.autoRotate = val==='play'?true:false 
+    this.controls.autoRotateSpeed = 4
+  }
+
 }
 
 const SetUp3D = new setUp3D()
