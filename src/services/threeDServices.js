@@ -8,22 +8,20 @@ import {
   Vector2,
   Vector3,
   Box3,
-
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { TransparentBackgroundFixedUnrealBloomPass } from '../TransparentBackgroundFixedUnrealBloomPass'
-import { loadRequired3dModel } from '../3DLoader'
-import { OrbitControls } from '../OrbitControls'
+import { TransparentBackgroundFixedUnrealBloomPass } from '../3D/TransparentBackgroundFixedUnrealBloomPass'
+import { loadRequired3dModel } from '../3D/3DLoader'
+import { OrbitControls } from '../3D/OrbitControls'
 
-import { setRequiredMaterial } from '../materials/setRequiredMaterial'
-import modelScene from '../../assets/models/seamaster3.glb'
-import { updateScreenPosition } from './Ruler'
+import { setRequiredMaterial } from '../3D/materials/setRequiredMaterial'
+import modelScene from '../3D/models/seamaster3.glb'
 
-class setUp3D {
+class threeDServices {
   constructor () {
     this.scene = null
     this.renderer = null
@@ -40,15 +38,8 @@ class setUp3D {
     this.canvasHeight = window.innerHeight
     this.scaleFactor = 1
     this.showHotspots=false
-    this.data = '{"model":"1","threedModel":"true","dragForce3d":"0.97","pointLight6":"0","pointLight5":"0","pointLight4":"0","pointLight3":"0.6","pointLight1":"0","pointLight2":"0.4","jewelryAngle3d":"10","jewelryLength3d":"200","calibrationData":{"metal":{"color":"#000000","refractionRatio":"0.98","metalness":"0.8","roughness":"0","opacity":"1","materialId":"BasicMetalMaterial"},"pearl":{"color":"#0689cb","refractionRatio":"0.98","metalness":"0.8","opacity":"1","materialId":"BasicMetalMaterial"},"crystal":{"color":"#d7b740","refractionRatio":"0.98","metalness":"1","roughness":"0.33","opacity":"1","materialId":"GoldMaterial"},"bottom_pearl":{"color":"#ff9f00","metalness":"0.8","roughness":"0","opacity":"0.8","dispersion":"1","squashFactor":"1","absorbptionFactor":"0.5","gammaFactor":"0.5","geometryFactor":"0.3","boostFactors":{"x":"2","y":"0.5","z":"0"},"materialId":"BasicCrystalMaterial"}}}'
-  }
-
-  reduceQuality () {
-    if (!this.renderer) {
-      return
-    }
-    this.dprScale = 1
-    this.renderer.setPixelRatio(window.devicePixelRatio)
+    this.data=''
+    this.childFunc=null
   }
 
   setupThreeJs () {
@@ -82,10 +73,8 @@ class setUp3D {
 
     this.addPostProcessing(window.innerWidth,window.innerHeight,this.dprScale)
 
-    this.url='https://mirrar-medialibrary.s3.ap-south-1.amazonaws.com/3d-demo/3d/E14322-SSILBIBWM.fbx'
-    // this.url="https://mirrar-medialibrary.s3.ap-south-1.amazonaws.com/3d-demo/3d/E14322-SSILBIBWM.glb"
-    // this.url="https://mirrar-medialibrary.s3.ap-south-1.amazonaws.com/placement-objects/Chair.glb"
-    this.update3dModel (JSON.parse(this.data), 400, 226)
+    this.url=this.data.data.fbx_url
+    this.update3dModel (this.data, 400, 226)
   }
 
   get3dModel (data, callback) {
@@ -197,7 +186,9 @@ class setUp3D {
     requestAnimationFrame(() => {
       if (this.renderer && this.scene) {
           this.renderer.render(this.scene, this.camera)
-          updateScreenPosition()
+          if(this.showHotspots && this.childFunc && this.childFunc.current){
+              this.childFunc.current(this.model,this.scene,this.renderer,this.camera)
+          }
         }
         if(this.controls){
           this.controls.update()
@@ -257,10 +248,10 @@ class setUp3D {
     }
 
     object.scale.set(scale, scale, scale)
-
-    object.position.y = 0
-    object.position.x = 0
-    object.position.z = 0
+    console.log(model.center)
+    object.position.y = model.center.y
+    object.position.x = model.center.x
+    object.position.z = model.center.z
 
     object.rotation.x = -0
     object.rotation.y = 0
@@ -315,8 +306,8 @@ class setUp3D {
 
 }
 
-const SetUp3D = new setUp3D()
+const ThreeDServices = new threeDServices()
 
 export {
-  SetUp3D
+  ThreeDServices
 }

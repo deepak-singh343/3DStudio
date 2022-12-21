@@ -1,34 +1,34 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { FaAngleLeft,FaAngleRight,FaSearchPlus,FaSearchMinus,FaPlay,FaPause,FaRulerHorizontal } from 'react-icons/fa';
-import Hotspots from './Hotspots';
-import {SetUp3D} from '../3D/services/setUp3D'
+import {ThreeDServices} from '../services/threeDServices'
+import { AppContext } from "../context/AppContextProvider";
 const Controls = () => {
-  const [showHotspots,setShowHideRuler]=useState(false)
+  const {showHotspots,setShowHideHostSpots} = useContext(AppContext)
   const [showPlayButton,setShowHidePlayButton]=useState(true)
   const [showPauseButton,setShowHidePauseButton]=useState(false)
   const handleShowHideHotSpots=()=>{
-    setShowHideRuler(!showHotspots)
+    setShowHideHostSpots(!showHotspots)
   }
 
   const handleModelRotationHorizontalRotation=(rotation)=>{
-    SetUp3D.rotateModelHorizontally(rotation)
+    ThreeDServices.rotateModelHorizontally(rotation)
   }
 
   const handlePlayPauseButton=(val)=>{
     if(val==='play'){
       setShowHidePlayButton(!showPlayButton)
       setShowHidePauseButton(!showPauseButton)
-      SetUp3D.playPauseAutoRotation(val)
+      ThreeDServices.playPauseAutoRotation(val)
     }else{
       setShowHidePlayButton(!showPlayButton)
       setShowHidePauseButton(!showPauseButton)
-      SetUp3D.playPauseAutoRotation(val)
+      ThreeDServices.playPauseAutoRotation(val)
     }
   }
 
   const handleZoomInZoomOut =(type)=>{
-    SetUp3D.zoomInZoomOut(type)
+    ThreeDServices.zoomInZoomOut(type)
   }
 
   return (
@@ -52,10 +52,6 @@ const Controls = () => {
           </div>
         </div>
     </div>
-    {
-      showHotspots?(<Hotspots/>):''
-    }
-    
     </div>
   )
 }
