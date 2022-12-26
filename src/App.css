@@ -2,14 +2,6 @@
   text-align: center;
 }
 
-#studio-mode-parent{
-  background-color: lightgray;
-}
-
-#studioModeContainer{
-  background-color: lightgray;
-}
-
 #threeD-canvas{
   cursor:grab
 }

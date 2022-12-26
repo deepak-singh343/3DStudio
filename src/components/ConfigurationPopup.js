@@ -22,7 +22,7 @@ export default function ConfigurationPopup() {
           <div className="w-screen h-screen absolute bg-[#000000] opacity-50"></div>
           <div className="flex justify-between items-center z-50 bg-white w-[90%] h-[700px]">
             <div className="w-[50%] h-full">
-              <div id="studioModeContainer" className="w-[45%] h-full absolute">
+              <div id="studioModeContainer" className="w-[45%] h-full absolute bg-gray-200">
                 <StudioMode/>
               </div>
             </div>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState,useContext } from 'react';
-import { FaAngleLeft,FaAngleRight,FaSearchPlus,FaSearchMinus,FaPlay,FaPause,FaRulerHorizontal } from 'react-icons/fa';
 import {GrRotateLeft,GrRotateRight} from 'react-icons/gr'
 import {TfiZoomIn,TfiZoomOut} from 'react-icons/tfi'
 import {SlControlPlay,} from 'react-icons/sl'
@@ -39,7 +38,7 @@ const Controls = () => {
   return (
     <div>
       <div className='w-full flex justify-center bottom-12 absolute'>
-        <div className='flex justify-around w-[17%]'>
+        <div className='flex justify-around w-[35%]'>
           <div className='rotate flex text-white cursor-pointer'>
             <GrRotateRight size={30} onClick={()=>handleModelRotationHorizontalRotation('left')}/>
             <GrRotateLeft size={30} onClick={()=>handleModelRotationHorizontalRotation('right')}/>
