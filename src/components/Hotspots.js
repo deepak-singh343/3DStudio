@@ -23,7 +23,8 @@ const Hotspots = ({childFunc}) => {
       showFrontBottomLeftPoint,setShowFrontBottomLeftPoint,
       itemLengthValue,setItemLengthValue,
       itemBreadthValue,setItemBreadthValue,
-      itemHeightValue,setItemHeightValue
+      itemHeightValue,setItemHeightValue,
+      showHotSpots,showPopUp
     } = useContext(AppContext)
 
     useEffect(()=>{

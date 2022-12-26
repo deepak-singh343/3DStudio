@@ -5,8 +5,9 @@ import Hotspots from './Hotspots'
 import { AppContext } from "../context/AppContextProvider";
 import { fetchProductData } from '../services/ApiServices';
 const StudioMode = () => {
-  const {showHotspots} = useContext(AppContext)
+  const {showHotspots,showPopup} = useContext(AppContext)
   ThreeDServices.showHotspots=showHotspots
+  ThreeDServices.showPopup=showPopup
   const childFunc=useRef(null)
   useEffect(() => {
     fetchData()
@@ -22,10 +23,12 @@ const StudioMode = () => {
   }
 
   return (
-    <div id='studio-mode'>
+    <>
       <Controls/>
       {showHotspots?<Hotspots childFunc={childFunc}/>:''}
-    </div>
+    </>
+      
+    
   )
 }
 

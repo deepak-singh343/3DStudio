@@ -22,6 +22,8 @@ const AppContextProvider = ({children}) => {
     const [itemLengthValue,setItemLengthValue]=useState('')
     const [itemBreadthValue,setItemBreadthValue]=useState('')
     const [itemHeightValue,setItemHeightValue]=useState('')
+    const [showPopup, setShowPopUp] = useState(false);
+
     return <AppContext.Provider value={{
         showHotspots,setShowHideHostSpots,
         topLeftStyle,setTopLeftStyle,
@@ -41,7 +43,8 @@ const AppContextProvider = ({children}) => {
         showFrontBottomLeftPoint,setShowFrontBottomLeftPoint,
         itemLengthValue,setItemLengthValue,
         itemBreadthValue,setItemBreadthValue,
-        itemHeightValue,setItemHeightValue
+        itemHeightValue,setItemHeightValue,
+        showPopup, setShowPopUp
     }}>
         {children}
     </AppContext.Provider>

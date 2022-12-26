@@ -40,12 +40,13 @@ class threeDServices {
     this.showHotspots=false
     this.data=''
     this.childFunc=null
+    this.showPopup=false
   }
 
   setupThreeJs () {
-    if (this.sceneLoaded) {
-      return
-    }
+    // if (this.sceneLoaded) {
+    //   return
+    // }
     this.scene = new Scene()
     this.renderer = this.createRenderer()
     this.canvas=this.renderer.domElement;
@@ -104,12 +105,19 @@ class threeDServices {
     renderer.toneMappingWhitePoint = 1
     renderer.gammaInput = true
     renderer.gammaOutput = true
-    renderer.setSize(window.innerWidth, window.innerHeight-2);
+    renderer.setSize(900, 700);
     const canvas=renderer.domElement;
-    canvas.id='threeD-canvas'
-    let threeDCanvas=document.getElementById('threeD-canvas')
-    if(!threeDCanvas){
-      document.getElementById('studio-mode').append(canvas);
+    canvas.classList.add('threeD-canvas')
+    const parentContainer=!this.showPopup?
+                        document.getElementById('studio-mode-parent')
+                        :document.getElementById('studioModeContainer')
+    
+    
+    renderer.setSize(parentContainer.clientWidth, 700);
+    let threeDCanvas=document.getElementsByClassName('threeD-canvas')[0]
+    const checkIfStudioModeContainsCanvas=  parentContainer.contains(threeDCanvas);
+    if(!checkIfStudioModeContainsCanvas){
+      parentContainer.append(canvas);
     }
     return renderer
   }
