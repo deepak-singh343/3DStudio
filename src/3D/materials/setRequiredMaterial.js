@@ -21,7 +21,7 @@ const genCubeUrls = function (prefix, postfix) {
 
 const hdrUrls = genCubeUrls('3d/environments/cubeTexture/', '.hdr')
 
-const textureCubeUrls = genCubeUrls('3d/environments/imageTexture/', '.jpg')
+const textureCubeUrls = genCubeUrls('3d/environments/imageTexture/texture1', '.jpg')
 
 let hdrCubeRenderTarget
 
@@ -91,11 +91,7 @@ function updateRequiredMaterial (object,renderer, materialData, calibratedData, 
   }) => {
     let material
     const MaterialPrototype = materialData.type
-    const nodeName = givenNodeName
-    
-      material = new MaterialPrototype({ object, envMap, renderer: renderer })
-
-
+    material = new MaterialPrototype({ object, envMap, renderer: renderer })
     if (object.material && object.material.dispose) {
       object.material.dispose()
     }

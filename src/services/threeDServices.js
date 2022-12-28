@@ -8,6 +8,7 @@ import {
   Vector2,
   Vector3,
   Box3,
+  CubeTextureLoader,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
@@ -44,9 +45,9 @@ class threeDServices {
   }
 
   setupThreeJs () {
-    // if (this.sceneLoaded) {
-    //   return
-    // }
+    if (this.sceneLoaded) {
+      return
+    }
     this.scene = new Scene()
     this.renderer = this.createRenderer()
     this.canvas=this.renderer.domElement;
@@ -56,10 +57,12 @@ class threeDServices {
     // Load Light
     this.addLightsToTheScene()
 
-    const pmremGenerator = new PMREMGenerator(this.renderer)
-    const backgroundTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture
-    this.scene.environment = backgroundTexture
-    
+    // const pmremGenerator = new PMREMGenerator(this.renderer)
+    // const backgroundTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0).texture
+    // this.scene.environment = backgroundTexture
+
+    this.addEnvironment()
+  
     this.sceneLoaded = true
     this.camera = new OrthographicCamera(-this.canvasWidth / 2, this.canvasWidth / 2, this.canvasHeight / 2, -this.canvasHeight / 2, 1, 10000)
 
@@ -75,7 +78,16 @@ class threeDServices {
     this.addPostProcessing(window.innerWidth,window.innerHeight,this.dprScale)
 
     this.url=this.data.data.fbx_url
-    this.update3dModel (this.data, 400, 226)
+    this.update3dModel (this.data, 470, 240)
+  }
+
+  addEnvironment(){
+    const outerEnvironmentMap = new CubeTextureLoader()
+        .setPath( '3d/environments/imageTexture/texture3/' )
+        .load( ['px.jpg','nx.jpg','py.jpg',
+                'ny.jpg','pz.jpg','nz.jpg'
+          ] );
+    this.scene.environment = outerEnvironmentMap
   }
 
   get3dModel (data, callback) {

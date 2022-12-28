@@ -4,10 +4,12 @@ import Button from "./components/Button";
 import ConfigurationPopup from "./components/ConfigurationPopup";
 import { AppContext } from './context/AppContextProvider';
 import StudioMode from './components/StudioMode';
+import { ThreeDServices } from './services/threeDServices';
 function App() {
   const {showPopup,setShowPopUp} = useContext(AppContext)
-  console.log(showPopup)
+
   const showConfigPopup = () => {
+    ThreeDServices.sceneLoaded=false
     setShowPopUp(true)
   }
   return (
