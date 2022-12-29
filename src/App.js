@@ -1,19 +1,26 @@
 import './App.css';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Button from "./components/Button";
 import ConfigurationPopup from "./components/ConfigurationPopup";
 import { AppContext } from './context/AppContextProvider';
 import StudioMode from './components/StudioMode';
 import { ThreeDServices } from './services/threeDServices';
 function App() {
-  const {showPopup,setShowPopUp} = useContext(AppContext)
+  const {showPopup,setShowPopUp, setIsMobile} = useContext(AppContext)
+
+  useEffect(() => {
+    if(window.innerWidth < 600) {
+      setIsMobile(true)
+      console.log('width < 600')
+    }
+  })
 
   const showConfigPopup = () => {
     ThreeDServices.sceneLoaded=false
     setShowPopUp(true)
   }
   return (
-    <div className="flex items-center justify-center bg-black h-[100vh] w-[100vw]">
+    <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col">
       <div className="flex items-center justify-center relative">
         <div className="bg-white w-[900px] h-[700px]">
           <div id='studio-mode-parent' className='bg-gray-200'>
