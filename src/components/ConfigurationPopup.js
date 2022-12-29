@@ -37,7 +37,7 @@ export default function ConfigurationPopup() {
           </div>
           ) : null
         }
-        <div className="md:w-[50%] h-full flex flex-start flex-col items-start gap-[20px] border border-black pl-[15px] pr-[15px] pb-[15px] w-full">
+        <div className="md:w-[50%] h-full flex flex-start flex-col items-start gap-[20px]  pl-[15px] pr-[15px] pb-[15px] w-full">
           <ul className=" flex flex-start  items-center w-full pt-[20px]  gap-[20px]  cursor-pointer text-base font-medium">
             <li
               onClick={showJewelleryPrefMenu}
