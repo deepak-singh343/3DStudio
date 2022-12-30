@@ -37,14 +37,14 @@ export default function ConfigurationPopup() {
           </div>
           ) : null
         }
-        <div className="md:w-[50%] h-full flex flex-start flex-col items-start gap-[20px]  pl-[15px] pr-[15px] pb-[15px] w-full">
+        <div className="md:w-[50%] h-full flex flex-start flex-col items-start gap-[20px]  pl-[6px] pr-[6px] pb-[6px] md:pr-[15px] md:pl-[15px] w-full">
           <ul className=" flex flex-start  items-center w-full pt-[20px]  gap-[20px]  cursor-pointer text-base font-medium">
             <li
               onClick={showJewelleryPrefMenu}
               className={
                 showJewlleryPref
-                  ? " border-b-4 pb-[5px] border-[#7eb046] text-[21px] font-semibold"
-                  : "text-[18px]"
+                  ? " border-b-4 pb-[5px] border-[#7eb046] sm: text-[18px] md:text-[21px] font-semibold"
+                  : "md:text-[18px] sm:text-[16px]"
               }
             >
               Jewellery Preference
@@ -53,8 +53,8 @@ export default function ConfigurationPopup() {
               onClick={showRingSizeMenu}
               className={
                 showRingSize
-                  ? " border-b-4 pb-[5px] border-[#7eb046] text-[21px] font-semibold"
-                  : "text-[18px]"
+                  ? " border-b-4 pb-[5px] border-[#7eb046] sm: text-[18px] md:text-[21px] font-semibold"
+                  : "md:text-[18px] sm:text-[16px]"
               }
             >
               Ring Size
