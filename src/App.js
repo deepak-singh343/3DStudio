@@ -38,7 +38,7 @@ function App() {
   };
 
   return (
-    <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col">
+    <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col relative">
       <div className="flex items-center justify-center relative">
         <div className="bg-white w-[900px] h-[700px]">
           <div id="studio-mode-parent" className="bg-gray-200">
@@ -60,7 +60,7 @@ function App() {
           style={style}
           className={"resizable"}
           minHeight={"7%"}
-          maxHeight={`90%`}
+          maxHeight={`80%`}
           boundsByDirection={true}
           enable={{ top: true }}
           handleComponent={{

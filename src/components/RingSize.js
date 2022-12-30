@@ -36,14 +36,14 @@ export default function RingSize() {
   }
 
   return (
-    <div className="w-full grid grid-cols-4	 h-[90%] items-center gap-[20px] flex-wrap	">
+    <div className="w-full grid grid-cols-2 md: grid-cols-2 max-h-[300px] overflow-y-scroll md:max-h-[100%] 	 h-[90%] items-center gap-[20px] flex-wrap	">
       {ringSizeArr.map(function (item, i) {
         return (
           <div key={i} className ={active ? "border border-solid border-black rounded-md p-[6px] shadow-[0_0_2px_2px_rgba(0,0,0,0.3)]" :"border border-solid border-black rounded-md p-[6px]" } onClick ={makeCardActive}>
-            <p >US Size: <span className="font-medium">{item[0]}</span></p>
+            <p >US Size: <span className="font-medium text-sm md:text-base">{item[0]}</span></p>
             <div>
               <p>
-                Inside Diameter: <span className="font-medium">{item[1]}</span>
+                Inside Diameter: <span className="font-medium text-sm md:text-base">{item[1]}</span>
               </p>
             </div>
           </div>

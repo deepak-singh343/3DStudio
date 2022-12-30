@@ -23,7 +23,6 @@ export default function ConfigurationPopup() {
 
   return (
     <div className="flex justify-center items-start w-full h-hull absolute overflow-hidden">
-      <div className="w-screen h-screen absolute bg-[#000000] opacity-50"></div>
       <div className="flex justify-between items-center z-50 bg-white md:w-[90%] md:h-[700px] sm:justify-center w-full h-full">
         {
           isMobile == false ? (
