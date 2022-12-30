@@ -47,7 +47,7 @@ function App() {
         </div>
         <Button
           buttonfunction={showConfigPopup}
-          buttonParentClass ={'sm: hidden'}
+          buttonParentClass ={'hidden md:flex'}
           buttonclass={
             "absolute pt-[15px] pb-[15px] pl-[25px] pr-[25px] flex items-center justify-center bg-black  bottom-[10px] right-[10px] w-[90px] h-[25px] cursor-pointer rounded-[50px]"
           }
