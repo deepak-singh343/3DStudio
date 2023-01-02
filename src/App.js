@@ -21,8 +21,9 @@ const style = {
   overflow:'hidden'
 };
 
+
 function App() {
-  const { showPopup, setShowPopUp, setIsMobile, isMobile } =
+  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref} =
     useContext(AppContext);
 
   const [activeMenu, setActiveMenu] = useState("")
@@ -44,12 +45,7 @@ function App() {
     setActiveMenu(menu)
   } 
 
-  const setHeight = (resizableHeight) => {
-    resizableHeight = '80%'
-    console.log(resizableHeight, 'resizeH')
-  }
-
-  let resizableHeight;
+  let resizableHeight = showJewlleryPref ? 80 : 50
 
   return (
     <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col relative">
@@ -74,18 +70,18 @@ function App() {
           style={style}
           className={"resizable"}
           minHeight={"7%"}
-          maxHeight={`90%`}
+          maxHeight={`${resizableHeight}%`}
           boundsByDirection={true}
           enable={{ top: true }}
           handleComponent={{
-            top: <TrayPuller x={setHeight()}></TrayPuller>,
+            top: <TrayPuller></TrayPuller>,
           }}
           handleStyles={{
             top: { height: "50px" },
           }}
           defaultSize={{
             width: "100%",
-            height: `15%`,
+            height:`${resizableHeight}%`,
           }}
         >
           <ConfigurationPopup parentCallBackFunction={getActiveMenu} />
