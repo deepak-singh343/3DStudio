@@ -36,7 +36,7 @@ export default function RingSize() {
   }
 
   return (
-    <div className="w-full grid grid-cols-2 md: grid-cols-2 max-h-[300px] overflow-y-scroll md:max-h-[100%] 	 h-[90%] items-center gap-[20px] flex-wrap	">
+    <div className="w-full grid grid-cols-2 md: grid-cols-2 max-h-[400px] overflow-y-scroll md:max-h-[100%] 	 h-[90%] items-center gap-[20px] flex-wrap	">
       {ringSizeArr.map(function (item, i) {
         return (
           <div key={i} className ={active ? "border border-solid border-black rounded-md p-[6px] shadow-[0_0_2px_2px_rgba(0,0,0,0.3)]" :"border border-solid border-black rounded-md p-[6px]" } onClick ={makeCardActive}>
