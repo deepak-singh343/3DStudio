@@ -7,6 +7,7 @@ import StudioMode from "./components/StudioMode";
 import { ThreeDServices } from "./services/threeDServices";
 import { Resizable } from "re-resizable";
 import { TrayPuller } from "./components/TrayPuller";
+import {RxCrossCircled} from 'react-icons/rx'
 
 const style = {
   position: "absolute",
@@ -23,10 +24,11 @@ const style = {
 
 
 function App() {
-  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref} =
+  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref, showRingSize,closeClick, setCloseClick} =
     useContext(AppContext);
 
   const [activeMenu, setActiveMenu] = useState("")
+  let resizableHeight = 20
 
 
   useEffect(() => {
@@ -35,6 +37,11 @@ function App() {
       console.log("width < 600");
     }
   });
+
+  const closePopUp = () => {
+    setCloseClick(true)
+    console.log('close clock')
+  }
 
   const showConfigPopup = () => {
     ThreeDServices.sceneLoaded = false;
@@ -45,7 +52,23 @@ function App() {
     setActiveMenu(menu)
   } 
 
-  let resizableHeight = showJewlleryPref ? 80 : 50
+  const setHight = () => {
+    console.log('xxxxx')
+
+    if(showJewlleryPref) {
+      resizableHeight = 80
+    }
+    
+    if (showRingSize) {
+      resizableHeight = 50
+    }
+    
+    if (closeClick) {
+      resizableHeight = 20
+    }
+  }
+
+  // let resizableHeight = setHight()
 
   return (
     <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col relative">
@@ -66,10 +89,14 @@ function App() {
         />
       </div>
       {isMobile ? (
-        <Resizable
+        <>
+
+                <Resizable
+        // onResize= {setHight()}
+        onResizeStart={setHight()}
           style={style}
           className={"resizable"}
-          minHeight={"7%"}
+          minHeight={"20%"}
           maxHeight={`${resizableHeight}%`}
           boundsByDirection={true}
           enable={{ top: true }}
@@ -79,13 +106,21 @@ function App() {
           handleStyles={{
             top: { height: "50px" },
           }}
+          size = {{height:`${resizableHeight}%`}}
           defaultSize={{
             width: "100%",
-            height:`${resizableHeight}%`,
+            height:`20%`
           }}
         >
           <ConfigurationPopup parentCallBackFunction={getActiveMenu} />
+          <div onClick={closePopUp} className="absolute top-[5px] right-[10px] z-[100]">
+            <RxCrossCircled/>
+          </div>
         </Resizable>
+  
+        
+        </>
+        
       ) : null}
       {showPopup ? <ConfigurationPopup parentCallBackFunction={getActiveMenu} /> : null}
     </div>

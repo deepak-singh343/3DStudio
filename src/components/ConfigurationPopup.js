@@ -7,18 +7,21 @@ import StudioMode from "./StudioMode";
 
 
 export default function ConfigurationPopup({parentCallBackFunction}) {
-  const { isMobile,showJewlleryPref, setShowJewlleryPref,showRingSize, setShowRingSize } = useContext(AppContext);
+  const { isMobile,showJewlleryPref, setShowJewlleryPref,showRingSize, setShowRingSize, setCloseClick } = useContext(AppContext);
 
   const showJewelleryPrefMenu = (event) => {
     setShowRingSize(false);
     setShowJewlleryPref(true);
+    setCloseClick(false)
+    
     parentCallBackFunction(event.target.innerText)
   };
 
   const showRingSizeMenu = (event) => {
     setShowJewlleryPref(false);
     setShowRingSize(true);
-    parentCallBackFunction(event.target.innerText).toString()
+    setCloseClick(false)
+    parentCallBackFunction(event.target.innerText)
   };
 
 
