@@ -16,6 +16,7 @@ const style = {
   bottom: 0,
   right: 0,
   paddingTop: "30px",
+  paddingBottom: '20px',
   background: "white",
   borderTopRightRadius: "20px",
   borderTopLeftRadius: "20px",
@@ -24,11 +25,12 @@ const style = {
 
 
 function App() {
-  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref, showRingSize,closeClick, setCloseClick} =
+  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref, showRingSize,closeClick, setCloseClick,    setShowRingSize,
+    setShowJewlleryPref} =
     useContext(AppContext);
 
   const [activeMenu, setActiveMenu] = useState("")
-  let resizableHeight = 20
+  let resizableHeight = 10
 
 
   useEffect(() => {
@@ -40,12 +42,16 @@ function App() {
 
   const closePopUp = () => {
     setCloseClick(true)
+    setShowRingSize(false);
+    setShowJewlleryPref(false);
+
     console.log('close clock')
   }
 
   const showConfigPopup = () => {
     ThreeDServices.sceneLoaded = false;
     setShowPopUp(true);
+    setShowJewlleryPref(true)
   };
 
   const getActiveMenu = (menu) => {
@@ -60,11 +66,11 @@ function App() {
     }
     
     if (showRingSize) {
-      resizableHeight = 50
+      resizableHeight = 40
     }
     
     if (closeClick) {
-      resizableHeight = 20
+      resizableHeight = 10
     }
   }
 

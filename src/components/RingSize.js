@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export default function RingSize() {
 
     const [active, setActive] = useState(false)
+
 
     const ringSizeArr = [
     [3, 14.1],
@@ -36,17 +37,12 @@ export default function RingSize() {
   }
 
   return (
-    <div className="w-full grid grid-cols-2 md: grid-cols-2 max-h-[400px] overflow-y-scroll md:max-h-[100%] 	 h-[90%] items-center gap-[20px] flex-wrap	">
+    <div className="w-full  max-h-[400px]  md:max-h-[100%] flex overflow-x-scroll	 h-[90%] items-center gap-[20px] pb-[20px]	">
       {ringSizeArr.map(function (item, i) {
         return (
-          <div key={i} className ={active ? "border border-solid border-black rounded-md p-[6px] shadow-[0_0_2px_2px_rgba(0,0,0,0.3)]" :"border border-solid border-black rounded-md p-[6px]" } onClick ={makeCardActive}>
-            <p >US Size: <span className="font-medium text-sm md:text-base">{item[0]}</span></p>
-            <div>
-              <p>
-                Inside Diameter: <span className="font-medium text-sm md:text-base">{item[1]}</span>
-              </p>
-            </div>
-          </div>
+          <div key={i} className ={"border border-solid border-black rounded-full p-[30px] flex justify-center items-center" } onClick ={makeCardActive}>
+          <p ><span className="font-medium text-sm md:text-base">{item[0]}</span></p>
+        </div>
         );
       })}
     </div>

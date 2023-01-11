@@ -1,10 +1,11 @@
 import { FaCaretLeft } from "react-icons/fa"
 import { FaCaretRight } from "react-icons/fa"
+import Button from "./Button";
 
 export default function JewelleryPreference() {
   return (
-    <div className="w-full flex justify-center items-start overflow-y-scroll h-full">
-      <div className="w-full flex flex-col gap-[25px] max-h-[300px] md:max-h-[100%]">
+    <div className="w-full flex justify-between items-start h-full flex-col h-full">
+      <div className="w-full flex flex-col gap-[25px] max-h-[80%] md:max-h-[100%]  overflow-y-scroll">
       <div className="flex flex-col gap-[10px] border-b-2 border-solid border-[#C0C0C0] pb-[24px]">
         <p className="text-sm md:text-base">Natural Gemstone Quality </p>
         <div className="flex justify-around w-[95%] md:w-[90%] m-auto relative">
@@ -97,6 +98,13 @@ export default function JewelleryPreference() {
         </div>
       </div>
       </div>
+      <Button
+            buttonclass={
+              "w-[250px] px-[10px] py-[15px] font-semibold text-center bg-[#FA505A] cursor-pointer text-white rounded-md "
+            }
+            buttontext={"Add To cart"}
+            buttonParentClass={"self-center	justify-self-start	"}
+          />
     </div>
   );
 }

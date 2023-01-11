@@ -27,8 +27,8 @@ export default function ConfigurationPopup({parentCallBackFunction}) {
 
 
   return (
-    <div className="flex justify-center items-start w-full h-full absolute overflow-hidden pb-[20px]">
-      <div className="flex justify-between items-center z-50 bg-white md:w-[90%] md:h-[700px] sm:justify-center w-full h-[85%] md:h-full">
+    <div className="flex justify-center md:items-center w-full h-full absolute overflow-hidden sm:items-start ">
+      <div className="flex justify-between items-center z-50 bg-white md:w-[90%] md:h-[700px] sm:justify-center w-full h-[85%]">
         {
           isMobile == false ? (
             <div className="w-[50%] h-full">
@@ -66,13 +66,6 @@ export default function ConfigurationPopup({parentCallBackFunction}) {
           </ul>
           {showJewlleryPref ? <JewelleryPreference /> : null}
           {showRingSize ? <RingSize /> : null}
-          <Button
-            buttonclass={
-              "w-[250px] px-[10px] py-[15px] font-semibold text-center bg-[#FA505A] cursor-pointer text-white rounded-md "
-            }
-            buttontext={"Add To cart"}
-            buttonParentClass={"self-center	justify-self-start	"}
-          />
         </div>
       </div>
     </div>
