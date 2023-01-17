@@ -62,7 +62,7 @@ function App() {
     console.log('xxxxx')
 
     if(showJewlleryPref) {
-      resizableHeight = 80
+      resizableHeight = 90
     }
     
     if (showRingSize) {
@@ -102,7 +102,7 @@ function App() {
         onResizeStart={setHight()}
           style={style}
           className={"resizable"}
-          minHeight={"20%"}
+         
           maxHeight={`${resizableHeight}%`}
           boundsByDirection={true}
           enable={{ top: true }}

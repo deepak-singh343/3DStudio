@@ -103,7 +103,7 @@ export default function JewelleryPreference() {
               "w-[250px] px-[10px] py-[15px] font-semibold text-center bg-[#FA505A] cursor-pointer text-white rounded-md "
             }
             buttontext={"Add To cart"}
-            buttonParentClass={"self-center	justify-self-start	"}
+            buttonParentClass={"self-center	justify-self-start sm: pb-[20px]"}
           />
     </div>
   );
