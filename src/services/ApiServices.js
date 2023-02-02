@@ -1,8 +1,9 @@
+import { ThreeDServices } from "./threeDServices"
+
 const fetchProductData=async()=>{
-    const brandId='562e2c77-8e8d-41b1-96bc-4b431b2c3a16'
-    const category='Earrings'
-    const productCode='E14322-SSILBIBWM-fbx'
-    const productCode1='E14322-SSILBIBWM'
+    const brandId=ThreeDServices.brandId
+    const category=ThreeDServices.category
+    const productCode=ThreeDServices.productCode
     const params={
       limit:1,
       product_code:productCode
@@ -22,7 +23,7 @@ const fetchProductData=async()=>{
       throw new Error(response)
     })
   .catch((err) => {
-    alert("Please check the url or all the images have been reviewed for this batch")
+    console.log(err)
   })
   
   return data.data[0]

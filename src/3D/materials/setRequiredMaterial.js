@@ -8,6 +8,7 @@ import {
 import {
   HDRCubeTextureLoader
 } from 'three/examples/jsm/loaders/HDRCubeTextureLoader'
+import { ThreeDServices } from '../../services/threeDServices'
 
 import { materialList } from './materialList'
 
@@ -62,18 +63,36 @@ function getUVCubeMapTexture (renderer) {
 }
 
 function setRequiredMaterial (object, renderer, data) {
+  ThreeDServices.current3DModel.data = data
+  ThreeDServices.current3DModel.editableNodes = {}
+
+  // resetting the active node list and corresponding materials
+  ThreeDServices.current3DModel.activeNodeList = {}
+  ThreeDServices.current3DModel.activeNodeMaterialList = {}
   object.traverse(o => {
     const meshName = o.name.toLowerCase()
     if (meshName.includes('customizable')) {
-      const [, nodeName, ] = meshName.split('-')
-      
+      const [, nodeName,defaultColor ] = meshName.split('-')
+      ThreeDServices.current3DModel.editableNodes[nodeName] = {
+        defaultColor,
+        node: o
+      }
+      // storing the nodes sharing the same name
+      if (ThreeDServices.current3DModel.activeNodeList[nodeName]) {
+        ThreeDServices.current3DModel.activeNodeList[nodeName].push(o)
+      } else {
+        ThreeDServices.current3DModel.activeNodeList[nodeName] = [o]
+      }
       const calibrationData = data.meta.calibrationData
 
       if (calibrationData) {
         if (calibrationData[nodeName] && typeof calibrationData[nodeName] === 'object' && Object.keys(calibrationData[nodeName]).length) {
           const materialId = calibrationData[nodeName].materialId
           const materialData = materialList.filter(material => material.id === materialId)[0]
-          updateRequiredMaterial(o,renderer, materialData, calibrationData[nodeName], nodeName)
+          ThreeDServices.current3DModel.assignedMaterials[nodeName] = null
+          if (materialData) {
+            updateRequiredMaterial(o, materialData, calibrationData[nodeName], nodeName)
+          }
         }
       }
     }
@@ -85,20 +104,49 @@ function setRequiredMaterial (object, renderer, data) {
 }
 
 
-function updateRequiredMaterial (object,renderer, materialData, calibratedData, givenNodeName) {
-  getUVCubeMapTexture(renderer).then(({
+function updateRequiredMaterial (object, materialData, calibratedData, givenNodeName) {
+  getUVCubeMapTexture(ThreeDServices.renderer).then(({
     envMap
   }) => {
     let material
-    const MaterialPrototype = materialData.type
-    material = new MaterialPrototype({ object, envMap, renderer: renderer })
-    if (object.material && object.material.dispose) {
-      object.material.dispose()
+    const MaterialPrototype = materialData?.type
+    const nodeName = givenNodeName || ThreeDServices.current3DModel.activeNodeName
+    if (
+      givenNodeName === nodeName &&
+        ThreeDServices.current3DModel.assignedMaterials[givenNodeName] &&
+        ThreeDServices.current3DModel.assignedMaterials[givenNodeName].id === materialData.id
+    ) {
+      material = ThreeDServices.current3DModel.assignedMaterials[givenNodeName]
+    } else {
+      // this is possible when an uploaded product is never edited
+      if (MaterialPrototype) {
+        material = new MaterialPrototype({ object, envMap,renderer:ThreeDServices.renderer })
+      }
     }
+    // this condition is important to check because material will be undefined
+    // if nothing is changed in terms of materials calibration
+    if (material) {
+      if (object.material && object.material.dispose) {
+        object.material.dispose()
+      }
 
-    material.attachMaterial(object)
-    if (calibratedData && typeof calibratedData === 'object' && Object.keys(calibratedData).length) {
-      material.setMaterialProperties(calibratedData)
+      material.attachMaterial(object)
+
+      if (calibratedData && typeof calibratedData === 'object' && Object.keys(calibratedData).length) {
+        material.setMaterialProperties(calibratedData)
+      }
+
+      ThreeDServices.current3DModel.assignedMaterials[nodeName] = material
+
+      // storing materials used for the nodes sharing the same name
+      if (ThreeDServices.current3DModel.activeNodeMaterialList[nodeName]) {
+        ThreeDServices.current3DModel.activeNodeMaterialList[nodeName].push(material)
+      } else {
+        ThreeDServices.current3DModel.activeNodeMaterialList[nodeName] = [material]
+      }
+
+      ThreeDServices.current3DModel.activeNodeMaterial = material
+      ThreeDServices.current3DModel.currentMaterialId = (calibratedData && calibratedData.materialId) || materialData.id
     }
 
   })

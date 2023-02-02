@@ -37,8 +37,8 @@ const Controls = () => {
 
   return (
     <div>
-      <div className='w-full flex justify-center bottom-12 absolute'>
-        <div className='flex justify-around w-[35%]'>
+      <div className='w-full flex justify-center bottom-14 z-10 absolute'>
+        <div className='flex justify-around w-[80%] md:w-[35%]'>
           <div className='rotate flex text-white cursor-pointer'>
             <GrRotateRight size={30} onClick={()=>handleModelRotationHorizontalRotation('left')}/>
             <GrRotateLeft size={30} onClick={()=>handleModelRotationHorizontalRotation('right')}/>

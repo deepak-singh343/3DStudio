@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
+import { AppContext } from "../context/AppContextProvider";
+import { ThreeDServices } from "../services/threeDServices";
 
 export default function RingSize() {
-
-    const [active, setActive] = useState(false)
-
-
+    const {active, setActive} = useContext(AppContext)
     const ringSizeArr = [
     [3, 14.1],
     [3.5, 14.5],
@@ -31,16 +30,15 @@ export default function RingSize() {
     [14, 23.2],
   ];
 
-
-  const makeCardActive = () => {
-    setActive(true)
+  const makeCardActive = (val,index) => {
+    setActive(index)
   }
 
   return (
-    <div className="w-full  max-h-[400px]  md:max-h-[100%] flex overflow-x-scroll	 h-[90%] items-center gap-[20px] pb-[20px]	">
-      {ringSizeArr.map(function (item, i) {
+    <div className="w-full  max-h-[400px]  md:max-h-[100%] flex flex-wrap h-[90%] items-center gap-[20px] pb-[20px]	">
+      {ringSizeArr.map(function (item, index) {
         return (
-          <div key={i} className ={"border border-solid border-black rounded-full p-[30px] flex justify-center items-center" } onClick ={makeCardActive}>
+          <div key={index} className ={`${active===index ? "border-green-500 border-2" : ""} border cursor-pointer border-solid border-gray rounded-full p-[30px] w-[80px] h-[80px] flex justify-center items-center`} onClick ={()=>makeCardActive(item[0],index)}>
           <p ><span className="font-medium text-sm md:text-base">{item[0]}</span></p>
         </div>
         );

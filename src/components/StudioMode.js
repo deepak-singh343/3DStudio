@@ -4,6 +4,7 @@ import Controls from './Controls'
 import Hotspots from './Hotspots'
 import { AppContext } from "../context/AppContextProvider";
 import { fetchProductData } from '../services/ApiServices';
+import EnvironmentSelection from './EnvironmentSelection';
 const StudioMode = () => {
   const {showHotspots,showPopup} = useContext(AppContext)
   ThreeDServices.showHotspots=showHotspots
@@ -23,10 +24,11 @@ const StudioMode = () => {
   }
 
   return (
-    <>
+    <div>
       <Controls/>
+      <EnvironmentSelection/>
       {showHotspots?<Hotspots childFunc={childFunc}/>:''}
-    </>
+    </div>
       
     
   )

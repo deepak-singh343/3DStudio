@@ -8,30 +8,27 @@ import { ThreeDServices } from "./services/threeDServices";
 import { Resizable } from "re-resizable";
 import { TrayPuller } from "./components/TrayPuller";
 import {RxCrossCircled} from 'react-icons/rx'
+import MirrarPopUp from "./components/MirrarPopUp";
+import { HiChevronLeft } from "react-icons/hi"
 
 const style = {
   position: "absolute",
-  // overflow: "hidden",
   left: 0,
   bottom: 0,
   right: 0,
-  paddingTop: "30px",
-  paddingBottom: '20px',
   background: "white",
-  borderTopRightRadius: "20px",
-  borderTopLeftRadius: "20px",
+  zIndex:'10',
   overflow:'hidden'
 };
 
 
 function App() {
-  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref, showRingSize,closeClick, setCloseClick,    setShowRingSize,
-    setShowJewlleryPref} =
+  const { showPopup, setShowPopUp, setIsMobile, isMobile ,showJewlleryPref, showRingSize,closeClick, setCloseClick, setShowRingSize,
+    setShowJewlleryPref,showMirrarWebArPopup,setShowMirrarWebArPopup,resizableHeight,setResizableHeight,setShowRightArrowIcon} =
     useContext(AppContext);
 
   const [activeMenu, setActiveMenu] = useState("")
-  let resizableHeight = 10
-
+  
 
   useEffect(() => {
     if (window.innerWidth < 600) {
@@ -44,12 +41,13 @@ function App() {
     setCloseClick(true)
     setShowRingSize(false);
     setShowJewlleryPref(false);
-
-    console.log('close clock')
+    setResizableHeight(15)
+    setShowRightArrowIcon(true)
   }
 
   const showConfigPopup = () => {
-    ThreeDServices.sceneLoaded = false;
+    // ThreeDServices.sceneLoaded = true;
+    ThreeDServices.showPopup = true
     setShowPopUp(true);
     setShowJewlleryPref(true)
   };
@@ -58,78 +56,110 @@ function App() {
     setActiveMenu(menu)
   } 
 
-  const setHight = () => {
-    console.log('xxxxx')
-
+  const setHeight = () => {
     if(showJewlleryPref) {
-      resizableHeight = 90
+      setResizableHeight('100')
     }
     
     if (showRingSize) {
-      resizableHeight = 40
+      setResizableHeight('100')
     }
     
     if (closeClick) {
-      resizableHeight = 10
+      setResizableHeight('15')
     }
   }
 
-  // let resizableHeight = setHight()
+  const openMirrarWebAr = () =>{
+    setShowMirrarWebArPopup(true)          
+  }
 
   return (
-    <div className="md:flex items-center justify-center bg-black h-[100vh] w-[100vw] sm:flex-col relative">
-      <div className="flex items-center justify-center relative">
-        <div className="bg-white w-[900px] h-[700px]">
-          <div id="studio-mode-parent" className="bg-gray-200">
-            <StudioMode />
+    <div>
+      {showMirrarWebArPopup?<MirrarPopUp/>:''}
+        <div className="md:flex justify-center bg-black h-[100vh] w-[100vw] sm:flex-col relative">
+          <div className={`${isMobile?'':'items-center'} flex justify-center relative h-full`}>
+            <div className={`${isMobile?'w-full h-[85%]':'w-[900px] h-[700px]'}  `}>
+              <div id="studio-mode-parent" className="bg-gray-200 relative w-full h-full">
+                <StudioMode />
+              </div>
+            </div>
+            {
+                !showPopup?
+                  <Button
+                      buttonfunction={showConfigPopup}
+                      buttonParentClass ={'hidden md:flex'}
+                      buttonclass={
+                        "absolute pt-[15px] pb-[15px] pl-[25px] pr-[25px] flex items-center justify-center bg-black  bottom-[20px] right-[340px] w-[90px] h-[25px] cursor-pointer rounded-[50px]"
+                      }
+                      buttontext={"Customise"}
+                      buttontextclass={"text-white text-sm"}
+                  />
+                :''
+            }
+
+            {
+                  !showPopup?
+                      <Button
+                          buttonfunction={openMirrarWebAr}
+                          buttonParentClass ={'flex'}
+                          buttonclass={
+                            "absolute pt-[15px] pb-[15px] pl-[25px] pr-[25px] flex items-center justify-center bg-black  md:bottom-[20px] md:right-[450px] bottom-[125px] right-[5px] w-[100px] h-[25px] cursor-pointer rounded-[50px]"
+                          }
+                          buttontext={"Try On"}
+                          buttontextclass={"text-white text-sm"}
+                      />
+                  :''
+            }
+            
+            {isMobile ? (
+              <Resizable
+                      // onResizeStop={setHeight}
+                      style={style}
+                      className={"resizable"}
+                      maxHeight={`100%`}
+                      minHeight={'15%'}
+                      boundsByDirection={true}
+                      enable={{ top: true }}
+                      handleComponent={{
+                        top: <TrayPuller></TrayPuller>,
+                      }}
+                      handleStyles={{
+                        top: { height: "30px" },
+                      }}
+                      size = {{height:`${resizableHeight}%`}}
+                      onResizeStop={(e, direction, ref, d) => {
+                        const reziableHeight=ref.style.height.split('%')[0]
+                        if(Number(reziableHeight)<16 || (d.height==0 && Number(reziableHeight)==100) ){
+                          setShowRightArrowIcon(true)
+                          setCloseClick(false)
+                          setShowJewlleryPref(false);
+                        }
+                        if(showJewlleryPref){
+                          setResizableHeight(Number(reziableHeight))
+                        }
+                      }}
+                      defaultSize={{
+                        width: "100%",
+                        height:`15%`
+                      }}
+                    >
+                      {
+                        showJewlleryPref||showRingSize?
+                          <div onClick={closePopUp} className="relative top-[15px] left-[10px] z-[100] flex w-[30px] h-[30px] min-w-[30px] bg-[#F8F8F8] justify-center items-center rounded-full drop-shadow-md">
+                            <HiChevronLeft/>
+                          </div>
+                        :''
+                      }
+                      <ConfigurationPopup parentCallBackFunction={getActiveMenu} />
+                      
+              </Resizable>
+            ) : null}
+            {showPopup ? <ConfigurationPopup parentCallBackFunction={getActiveMenu} /> : null}
           </div>
         </div>
-        <Button
-          buttonfunction={showConfigPopup}
-          buttonParentClass ={'hidden md:flex'}
-          buttonclass={
-            "absolute pt-[15px] pb-[15px] pl-[25px] pr-[25px] flex items-center justify-center bg-black  bottom-[10px] right-[10px] w-[90px] h-[25px] cursor-pointer rounded-[50px]"
-          }
-          buttontext={"Customise"}
-          buttontextclass={"text-white text-sm"}
-        />
-      </div>
-      {isMobile ? (
-        <>
-
-                <Resizable
-        // onResize= {setHight()}
-        onResizeStart={setHight()}
-          style={style}
-          className={"resizable"}
-         
-          maxHeight={`${resizableHeight}%`}
-          boundsByDirection={true}
-          enable={{ top: true }}
-          handleComponent={{
-            top: <TrayPuller></TrayPuller>,
-          }}
-          handleStyles={{
-            top: { height: "50px" },
-          }}
-          size = {{height:`${resizableHeight}%`}}
-          defaultSize={{
-            width: "100%",
-            height:`20%`
-          }}
-        >
-          <ConfigurationPopup parentCallBackFunction={getActiveMenu} />
-          <div onClick={closePopUp} className="absolute top-[5px] right-[10px] z-[100]">
-            <RxCrossCircled/>
-          </div>
-        </Resizable>
-  
-        
-        </>
-        
-      ) : null}
-      {showPopup ? <ConfigurationPopup parentCallBackFunction={getActiveMenu} /> : null}
     </div>
+    
   );
 }
 

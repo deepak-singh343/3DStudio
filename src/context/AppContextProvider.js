@@ -27,6 +27,12 @@ const AppContextProvider = ({children}) => {
     const [showJewlleryPref, setShowJewlleryPref] = useState(false);
     const [showRingSize, setShowRingSize] = useState(false);
     const [closeClick, setCloseClick] = useState(false)
+    const [showMirrarWebArPopup,setShowMirrarWebArPopup] =useState(false)
+    const [selectedMaterial,setSelectedMaterial] = useState({})
+    const [active, setActive] = useState(0)
+    const [selectedCaratWeight,setSelectedCaratWeight] = useState(0)
+    const [resizableHeight,setResizableHeight] = useState(15)
+    const [showRightArrowIcon,setShowRightArrowIcon] = useState(true)
 
     return <AppContext.Provider value={{
         showHotspots,setShowHideHostSpots,
@@ -52,7 +58,13 @@ const AppContextProvider = ({children}) => {
         isMobile, setIsMobile,
         showJewlleryPref, setShowJewlleryPref,
         showRingSize, setShowRingSize,
-        closeClick, setCloseClick
+        closeClick, setCloseClick,
+        showMirrarWebArPopup,setShowMirrarWebArPopup,
+        selectedMaterial,setSelectedMaterial,
+        active, setActive,
+        selectedCaratWeight,setSelectedCaratWeight,
+        resizableHeight,setResizableHeight,
+        showRightArrowIcon,setShowRightArrowIcon
     }}>
         {children}
     </AppContext.Provider>
