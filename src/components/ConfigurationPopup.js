@@ -52,7 +52,7 @@ export default function ConfigurationPopup({parentCallBackFunction}) {
                         }
             >
               Jewellery Preference
-              {showRightArrowIcon?<AiOutlineRight/>:''}
+              {showRightArrowIcon && isMobile?<AiOutlineRight/>:''}
             </li>
             {/* <li
               onClick={showRingSizeMenu}

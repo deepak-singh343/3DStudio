@@ -13,9 +13,9 @@ const EnvironmentSelection = () => {
     }
 
   return (
-    <div className='z-10 absolute top-[20px] right-[20px] w-[40%] md:w-[20%]'>
-      <FormControl fullWidth>
-        <InputLabel id="environment-label">Environment</InputLabel>
+    <div className='z-10 absolute top-[20px] right-[20px]'>
+      <FormControl variant="filled" sx={{ backgroundColor:'floralwhite' }}>
+        <InputLabel id="environment-label" sx={{top:'-8px',left:'-8px',fontSize:'15px',color:'black'}}>Environment</InputLabel>
         <Select
           labelId="environment-label"
           id="environment"
@@ -23,15 +23,24 @@ const EnvironmentSelection = () => {
           label="Environment"
           onChange={handleChange}
           defaultValue={environment}
-          sx={{color:'blue'}}
         >
-            <MenuItem value={'Blouberg Sunrise'}>Blouberg Sunrise</MenuItem>
+            {/* <MenuItem value={'Blouberg Sunrise'}>Blouberg Sunrise</MenuItem>
             <MenuItem value={'Moonless Golf'}>Moonless Golf</MenuItem>
             <MenuItem value={'Pedestrian Overpass'}>Pedestrian Overpass</MenuItem>
             <MenuItem value={'Quarry'}>Quarry</MenuItem>
             <MenuItem value={'Royal Esplanade'}>Royal Esplanade</MenuItem>
             <MenuItem value={'San Giuseppe Bridge'}>San Giuseppe Bridge</MenuItem>
-            <MenuItem value={'Venice Sunset'}>Venice Sunset</MenuItem>
+            <MenuItem value={'Venice Sunset'}>Venice Sunset</MenuItem> */}
+            <MenuItem value={'Texture1'}>Texture 1</MenuItem>
+            <MenuItem value={'Texture2'}>Texture 2</MenuItem>
+            <MenuItem value={'Texture3'}>Texture 3</MenuItem>
+            <MenuItem value={'Texture4'}>Texture 4</MenuItem>
+            <MenuItem value={'Texture5'}>Texture 5</MenuItem>
+            <MenuItem value={'Texture6'}>Texture 6</MenuItem>
+            <MenuItem value={'Texture7'}>Texture 7</MenuItem>
+            <MenuItem value={'Texture8'}>Texture 8</MenuItem>
+            <MenuItem value={'Texture9'}>Texture 9</MenuItem>
+            <MenuItem value={'Texture10'}>Texture 10</MenuItem>
         </Select>
       </FormControl>
     </div>
